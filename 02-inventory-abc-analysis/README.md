@@ -88,25 +88,48 @@ The current dataset contains no Z-class SKUs because no SKU has a CV above the c
 
 ## ABC-XYZ Matrix
 
-ABC-XYZ combines financial importance (ABC) with demand predictability (XYZ).
+## Inventory Policy
 
-| Segment | SKU Count | Interpretation |
-|---|---:|---|
-| AX | 7 | High-value, stable demand |
-| AY | 1 | High-value, moderately variable demand |
-| AZ | 0 | High-value, highly unpredictable demand |
-| BX | 6 | Medium-value, stable demand |
-| BY | 0 | Medium-value, moderately variable demand |
-| BZ | 0 | Medium-value, highly unpredictable demand |
-| CX | 3 | Lower-value, stable demand |
-| CY | 3 | Lower-value, moderately variable demand |
-| CZ | 0 | Lower-value, highly unpredictable demand |
-| **Total** | **20** | |
+The ABC-XYZ segments are mapped to differentiated inventory-management
+policies based on financial importance and demand predictability.
 
-The current dataset has no Z-class SKUs, so AZ/BZ/CZ are zero.
+| Segment | Service Level | Review Frequency | Inventory Control |
+|---|---:|---|---|
+| AX | 99% | Daily | Very High |
+| AY | 99% | Daily | Very High |
+| AZ | 99% | Daily | Very High |
+| BX | 95% | Weekly | High |
+| BY | 95% | Weekly | High |
+| BZ | 95% | Weekly | High |
+| CX | 90% | Monthly | Standard |
+| CY | 90% | Weekly | Standard |
+| CZ | 90% | Weekly | Standard |
 
-This segmentation provides a stronger basis for differentiated inventory
-policies because it considers both SKU value and demand predictability.
+The policy is maintained centrally on the `Inventory Policy` sheet and is
+automatically assigned to each SKU using `INDEX` and `MATCH`.
+
+The current dataset contains AX, AY, BX, CX, and CY segments. Z-class
+segments are included in the policy table for future datasets but currently
+contain no SKUs.
+
+### Policy-Driven Replenishment
+
+The replenishment model now follows:
+
+```text
+ABC + XYZ
+   ↓
+ABC-XYZ Segment
+   ↓
+Inventory Policy
+   ↓
+Service Level
+   ↓
+Z Score
+   ↓
+Safety Stock
+   ↓
+Reorder Point
 
 # Reorder Point
 
